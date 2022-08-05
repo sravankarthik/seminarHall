@@ -13,6 +13,29 @@ exports.createRequest = (req, res) => {
     });
 };
 
+exports.onSubmit = (req, res) => {
+    dates_array = req.body.dates;
+    duration_array = req.body.durations;
+    req.body.dates = undefined;
+    req.body.durations = undefined;
+    console.log(dates_array, duration_array);
+    for (let i = 0; i < dates_array.length; i++) {
+        req.body.user = req.profile;
+        req.body.date = dates_array[i];
+        req.body.duration = duration_array[i];
+        const request = new Request(req.body);
+        request.save((err, request) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Failed to save your request in DB"
+                });
+            }
+            // res.json(request);
+        });
+    }
+    res.json("done");
+}
+
 exports.getRequestById = (req, res, next, id) => {
     Request.findById(id).exec((err, request) => {
         if (err || !request) {
