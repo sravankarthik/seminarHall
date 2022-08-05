@@ -5,6 +5,10 @@ const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = Schema;
 
 const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
