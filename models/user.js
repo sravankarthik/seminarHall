@@ -7,7 +7,7 @@ const { ObjectId } = Schema;
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
+        required: true
     },
     phone_number: {
         type: String
@@ -20,10 +20,19 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
-    requests: [{
-        type: ObjectId,
-        ref: "Request"
-    }]
+    branch: {
+        type: String,
+        required: true
+    },
+    user_categeory: {
+        type: String,
+        required: true,
+        enum: ["student", "teacher"]
+    }
+    // requests: [{
+    //     type: ObjectId,
+    //     ref: "Request"
+    // }]
 
 }, { timestamps: true });
 
