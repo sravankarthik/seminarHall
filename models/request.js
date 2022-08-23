@@ -15,11 +15,16 @@ const requestSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date,
-        //default: Date.now
+        type: Date
+    },
+    timefrom: {
+        type: String,
         required: true
     },
-    duration: {
+    dates: {
+        type: Date,
+    },
+    timeto: {
         type: String,
         required: true
     },
