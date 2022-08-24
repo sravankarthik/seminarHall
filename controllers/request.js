@@ -1,4 +1,6 @@
 const Request = require("../models/request");
+const User = require("../models/user");
+const https = require('https')
 const accountSid = 'AC6a7f20b3285a56c1ce6981185d0fbf10';
 const authToken = '0b08ee802a9d1ea806e1fac9ea0b08e8';
 const client = require('twilio')(accountSid, authToken);
@@ -12,11 +14,87 @@ exports.createRequest = (req, res) => {
                 error: "Failed to save your request in DB"
             });
         }
+        User.findByIdAndUpdate(
+            { _id: req.body.user._id },
+            { $push: { requests: request } },
+            { new: true, useFindAndModify: false },
+            (err, assignment) => {
+                if (err || !assignment) {
+                    return res.status(400).json({
+                        error: "user was not able to update"
+                    })
+                }
+                console.log("done");
+            }
+        )
+        const data = JSON.stringify({
+            phone: '918610141355',
+            token: "d2b447ac23788d30022402b2d4349990ba19dfcd",
+            text: JSON.stringify(req.bod)
+        })
+
+        const options = {
+            hostname: 'whin.inutil.info',
+            port: 443,
+            path: '/whin',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': data.length
+            }
+        }
+
+        const r = https.request(options, res => {
+            console.log(`statusCode: ${res.statusCode}`)
+
+            res.on('data', d => {
+                process.stdout.write(d)
+            })
+        })
+
+        r.on('error', error => {
+            console.error(error)
+        })
+
+        r.write(data)
+        r.end()
         res.json(request);
     });
 };
 
 exports.onSubmit = (req, res) => {
+    display = { name: req.profile.name, email: req.profile.email, phone_number: req.profile.phone_number, user_category: req.profile.user_category, dates: req.body.dates, from: req.body.fromtimes, to: req.body.totimes, capacity: req.body.capacity, description: req.body.description };
+    const data = JSON.stringify({
+        phone: '918610141355',
+        token: "d2b447ac23788d30022402b2d4349990ba19dfcd",
+        text: JSON.stringify(display)
+    })
+
+    const options = {
+        hostname: 'whin.inutil.info',
+        port: 443,
+        path: '/whin',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
+        }
+    }
+
+    const r = https.request(options, res => {
+        console.log(`statusCode: ${res.statusCode}`)
+
+        res.on('data', d => {
+            process.stdout.write(d)
+        })
+    })
+
+    r.on('error', error => {
+        console.error(error)
+    })
+
+    r.write(data)
+    r.end()
     console.log(req.body);
     dates_array = req.body.dates;
     from_time_array = req.body.fromtimes;
@@ -25,6 +103,7 @@ exports.onSubmit = (req, res) => {
     req.body.dates = undefined;
     req.body.fromtimes = undefined;
     req.body.totimes = undefined;
+
     for (let i = 0; i < dates_array.length; i++) {
         req.body.user = req.profile;
         req.body.date = dates_array[i];
@@ -38,6 +117,20 @@ exports.onSubmit = (req, res) => {
                     error: "Failed to save your request in DB"
                 });
             }
+            User.findByIdAndUpdate(
+                { _id: req.body.user._id },
+                { $push: { requests: request } },
+                { new: true, useFindAndModify: false },
+                (err, assignment) => {
+                    if (err || !assignment) {
+                        return res.status(400).json({
+                            error: "user was not able to update"
+                        })
+                    }
+                    console.log("done");
+                }
+            )
+
             // res.json(request);
         });
     }

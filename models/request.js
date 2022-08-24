@@ -28,10 +28,6 @@ const requestSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // seminar_halls: [{
-    //     type: ObjectId,
-    //     ref: "Seminar"
-    // }],
     preference_1: {
         type: String,
         default: "any"
