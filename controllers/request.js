@@ -111,26 +111,25 @@ exports.onSubmit = (req, res) => {
         req.body.timeto = to_time_array[i];
         console.log(req.body);
         const request = new Request(req.body);
+        User.findByIdAndUpdate(
+            { _id: req.body.user._id },
+            { $push: { requests: request } },
+            { new: true, useFindAndModify: false },
+            (err, user) => {
+                if (err || !user) {
+                    return res.status(400).json({
+                        error: "user was not able to update"
+                    })
+                }
+                console.log("user updated");
+            }
+        )
         request.save((err, request) => {
             if (err) {
                 return res.status(400).json({
                     error: "Failed to save your request in DB"
                 });
             }
-            User.findByIdAndUpdate(
-                { _id: req.body.user._id },
-                { $push: { requests: request } },
-                { new: true, useFindAndModify: false },
-                (err, assignment) => {
-                    if (err || !assignment) {
-                        return res.status(400).json({
-                            error: "user was not able to update"
-                        })
-                    }
-                    console.log("done");
-                }
-            )
-
             // res.json(request);
         });
     }

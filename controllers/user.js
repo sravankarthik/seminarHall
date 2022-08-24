@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Request = require("../models/request");
 
 exports.getUserById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -44,4 +45,12 @@ exports.getUser = (req, res) => {
     req.profile.salt = undefined;
     req.profile.encry_password = undefined;
     return res.json(req.profile);
+}
+
+
+exports.getUserRequests = (req, res) => {
+    User.findById(req.profile._id).populate('requests').exec(function (err, person) {
+        if (err) return handleError(err);
+        res.json(person.requests);
+    });
 }

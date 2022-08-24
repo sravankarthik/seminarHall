@@ -18,14 +18,11 @@ const requestSchema = new mongoose.Schema({
         type: Date
     },
     timefrom: {
-        type: String,
+        type: Date,
         required: true
     },
-    dates: {
-        type: Date,
-    },
     timeto: {
-        type: String,
+        type: Date,
         required: true
     },
     preference_1: {

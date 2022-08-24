@@ -28,15 +28,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user_categeory: {
+    user_category: {
         type: String,
         required: true,
         enum: ["student", "teacher"]
-    }
-    // requests: [{
-    //     type: ObjectId,
-    //     ref: "Request"
-    // }]
+    },
+    requests: [{
+        type: ObjectId,
+        ref: "Request"
+    }]
 
 }, { timestamps: true });
 
