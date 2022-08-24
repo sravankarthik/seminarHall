@@ -63,7 +63,17 @@ exports.createRequest = (req, res) => {
 };
 
 exports.onSubmit = (req, res) => {
-    display = { name: req.profile.name, email: req.profile.email, phone_number: req.profile.phone_number, user_category: req.profile.user_category, dates: req.body.dates, from: req.body.fromtimes, to: req.body.totimes, capacity: req.body.capacity, description: req.body.description };
+    // let arr = req.body.dates;
+    // let from_time_array = [];
+    // let to_time_array = [];
+    // let dates = []
+    // for (let i = 0; i < arr.length; i++) {
+    //     dates.push(arr[i].date)
+    //     from_time_array.push(arr[i].fromTime)
+    //     to_time_array.push(arr[i].toTime)
+    // }
+    //display = { name: req.profile.name, email: req.profile.email, phone_number: req.profile.phone_number, user_category: req.profile.user_category, from: from_time_array, to: to_time_array, capacity: req.body.capacity, description: req.body.description };
+    display = { name: req.profile.name, email: req.profile.email, phone_number: req.profile.phone_number, user_category: req.profile.user_category, from: req.body.fromtimes, to: req.body.totimes, capacity: req.body.capacity, description: req.body.description };
     const data = JSON.stringify({
         phone: '918610141355',
         token: "d2b447ac23788d30022402b2d4349990ba19dfcd",
