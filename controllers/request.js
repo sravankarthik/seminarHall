@@ -215,3 +215,20 @@ exports.test = (req, res) => {
         .done();
     res.send("done");
 }
+
+exports.approveRequest = (req, res) => {
+    req.body.approved = true;
+    Request.findByIdAndUpdate(
+        { _id: req.request._id },
+        { $set: req.body },
+        { new: true, useFindAndModify: false },
+        (err, request) => {
+            if (err || !request) {
+                return res.status(400).json({
+                    error: "request was not able to update"
+                })
+            }
+            res.json(request);
+        }
+    )
+}
