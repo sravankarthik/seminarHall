@@ -163,7 +163,7 @@ exports.getRequest = (req, res) => {
 }
 
 exports.getAllRequests = (req, res) => {
-    Request.find().exec((err, requests) => {
+    Request.find().populate("user").exec((err, requests) => {
         if (err || !requests) {
             return res.status(400).json({
                 error: "request was not found"
