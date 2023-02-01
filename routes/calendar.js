@@ -21,31 +21,31 @@ router.post("/create-token", async (req, res, next) => {
     }
 })
 
-router.post("/create-event", async (req, res, next) => {
-    try {
-        const { summary, description, location, startDateTime, endDateTime } = req.body;
-        oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-        const calendar = google.calendar('v3');
-        const response = await calendar.events.insert({
-            auth: oauth2Client,
-            calendarId: 'primary',
-            requestBody: {
-                summary: summary,
-                description: description,
-                location: location,
-                colorId: "6",
-                start: {
-                    dateTime: new Date(startDateTime)
-                },
-                end: {
-                    dateTime: new Date(endDateTime)
-                }
-            }
-        })
-        res.send(response);
-    } catch (error) {
-        next(error);
-    }
-})
+// router.post("/create-event", async (req, res, next) => {
+//     try {
+//         const { summary, description, location, startDateTime, endDateTime } = req.body;
+//         oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+//         const calendar = google.calendar('v3');
+//         const response = await calendar.events.insert({
+//             auth: oauth2Client,
+//             calendarId: 'primary',
+//             requestBody: {
+//                 summary: summary,
+//                 description: description,
+//                 location: location,
+//                 colorId: "6",
+//                 start: {
+//                     dateTime: new Date(startDateTime)
+//                 },
+//                 end: {
+//                     dateTime: new Date(endDateTime)
+//                 }
+//             }
+//         })
+//         res.send(response);
+//     } catch (error) {
+//         next(error);
+//     }
+// })
 
 module.exports = router;

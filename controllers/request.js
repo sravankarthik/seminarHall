@@ -1,9 +1,10 @@
 const Request = require("../models/request");
 const User = require("../models/user");
 const https = require('https')
-const accountSid = 'AC6a7f20b3285a56c1ce6981185d0fbf10';
-const authToken = '0b08ee802a9d1ea806e1fac9ea0b08e8';
-const client = require('twilio')(accountSid, authToken);
+// const accountSid = 'AC6a7f20b3285a56c1ce6981185d0fbf10';
+// const authToken = '0b08ee802a9d1ea806e1fac9ea0b08e8';
+// const client = require('twilio')(accountSid, authToken);
+const axios = require("axios");
 
 exports.createRequest = (req, res) => {
     req.body.user = req.profile;
@@ -80,31 +81,47 @@ exports.onSubmit = (req, res) => {
         text: JSON.stringify(display)
     })
 
+    // const options = {
+    //     hostname: 'whin.inutil.info',
+    //     port: 443,
+    //     path: '/whin',
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Content-Length': data.length
+    //     }
+    // }
+
+    // const r = https.request(options, res => {
+    //     console.log(`statusCode: ${res.statusCode}`)
+
+    //     res.on('data', d => {
+    //         process.stdout.write(d)
+    //     })
+    // })
+
+    // r.on('error', error => {
+    //     console.error(error)
+    // })
+
+    // r.write(data)
+    // r.end()
     const options = {
-        hostname: 'whin.inutil.info',
-        port: 443,
-        path: '/whin',
         method: 'POST',
+        url: 'https://whin2.p.rapidapi.com/send',
         headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
-    }
+            'content-type': 'application/json',
+            'X-RapidAPI-Key': 'd578543bc3msh9bff5580db6c583p16cab8jsn78b921ec74b0',
+            'X-RapidAPI-Host': 'whin2.p.rapidapi.com'
+        },
+        data: data
+    };
 
-    const r = https.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
-
-        res.on('data', d => {
-            process.stdout.write(d)
-        })
-    })
-
-    r.on('error', error => {
-        console.error(error)
-    })
-
-    r.write(data)
-    r.end()
+    axios.request(options).then(function (response) {
+        console.log(response.data);
+    }).catch(function (error) {
+        console.error(error);
+    });
     console.log(req.body);
     dates_array = req.body.dates;
     from_time_array = req.body.fromtimes;
